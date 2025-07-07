@@ -1,166 +1,193 @@
-'use client';  // Diretiva para garantir que é um componente do lado do cliente
+'use client'
 
-import React, { useState, useEffect } from 'react';
-import { Flask, ArrowDown } from '@icon-park/react';
+import React, { useState, useEffect } from 'react'
+import DatePicker from 'react-datepicker'
+import { format } from 'date-fns'
+import { Flask } from '@icon-park/react';
+import 'react-datepicker/dist/react-datepicker.css'
+
+type Laboratorio = {
+  id: number
+  nome: string
+  local: string
+}
 
 const FormReserva = () => {
-  const [laboratorios, setLaboratorios] = useState([]);  // Lista de laboratórios
-  const [laboratorioId, setLaboratorioId] = useState('');  // ID do laboratório selecionado
-  const [dataInicio, setDataInicio] = useState('');
-  const [dataFim, setDataFim] = useState('');
-  const [professorResponsavel, setProfessorResponsavel] = useState('');
-  const [numEstudantes, setNumEstudantes] = useState(0);
-  const [repetirHorario, setRepetirHorario] = useState(false);
-  const [anotacoes, setAnotacoes] = useState('');
-  const [message, setMessage] = useState('');
-
-  // Buscar os laboratórios disponíveis na inicialização do componente
-  const fetchLaboratorios = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/laboratorios');
-      const data = await response.json();
-      if (response.ok) {
-        setLaboratorios(data);  // Atualiza o estado com os laboratórios
-      } else {
-        setMessage('Erro ao carregar os laboratórios');
-      }
-    } catch (error) {
-      setMessage('Erro ao conectar com o servidor');
-    }
-  };
+  const [laboratorios, setLaboratorios] = useState<Laboratorio[]>([])
+  const [laboratorioId, setLaboratorioId] = useState<string>('')
+  const [dataInicio, setDataInicio] = useState<Date | null>(null)
+  const [dataFim, setDataFim] = useState<Date | null>(null)
+  const [professor, setProfessor] = useState('')
+  const [numEstudantes, setNumEstudantes] = useState(0)
+  const [repetirHorario, setRepetirHorario] = useState(false)
+  const [anotacoes, setAnotacoes] = useState('')
+  const [mensagem, setMensagem] = useState('')
 
   useEffect(() => {
-    fetchLaboratorios();  // Chama a função para buscar os laboratórios assim que o componente é montado
-  }, []);
+    fetch('http://localhost:5000/api/laboratorios')
+      .then(res => res.json())
+      .then(data => setLaboratorios(data))
+      .catch(err => console.error('Erro ao carregar laboratórios:', err))
+  }, [])
 
-  // Função para lidar com o envio do formulário
+  const formatDateTime = (date: Date | null) => {
+    return date ? format(date, "yyyy-MM-dd'T'HH:mm") : ''
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();  // Previne o comportamento padrão de envio de formulário
+    e.preventDefault()
 
-    const data = {
-      data_inicio: dataInicio,
-      data_fim: dataFim,
-      professor_responsavel: professorResponsavel,
+    if (!dataInicio || !dataFim || !laboratorioId) {
+      setMensagem('Preencha todos os campos obrigatórios.')
+      return
+    }
+
+    const payload = {
+      data_inicio: formatDateTime(dataInicio),
+      data_fim: formatDateTime(dataFim),
+      professor_responsavel: professor,
       num_estudantes: numEstudantes,
       repetir_horario: repetirHorario,
-      anotacoes: anotacoes,
-      laboratorio_id: laboratorioId,  // Passa o ID do laboratório selecionado
-    };
+      anotacoes,
+      laboratorio_id: Number(laboratorioId),
+    }
 
     try {
-      const response = await fetch('http://localhost:5000/api/add_reserva', {
+      const res = await fetch('http://localhost:5000/api/add_reserva', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
 
-      const result = await response.json();
-      if (response.ok) {
-        setMessage('Reserva criada com sucesso!');
+      const data = await res.json()
+
+      if (res.ok) {
+        setMensagem('Reserva criada com sucesso!')
+        // resetar campos
+        setDataInicio(null)
+        setDataFim(null)
+        setProfessor('')
+        setNumEstudantes(0)
+        setRepetirHorario(false)
+        setAnotacoes('')
+        setLaboratorioId('')
       } else {
-        setMessage(`Erro: ${result.error}`);
+        setMensagem(data.error || 'Erro ao criar reserva.')
       }
     } catch (error) {
-      setMessage('Erro ao conectar com o servidor.');
+      setMensagem('Erro de conexão com o servidor.')
     }
-  };
+  }
 
   return (
-    <div className='text-black px-3 w-full'>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-3'>
-        {/* Selecione o Laboratório */}
-        <div className='bg-[#E5E6E8] rounded-lg flex items-center px-2.5 gap-1.5'>
-          <Flask theme="outline" size="24" fill="#333"></Flask>
+    <div className='flex flex-col gap-3.5 px-1 mt-2'>
+      <span className='text-lg font-bold text-neutral-800'>Criar nova reserva</span>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white max-w-xl w-full mx-auto px-3">
+        <div className='rounded-lg w-full border border-gray-400 px-2 flex items-center h-11 gap-1.5'>
+          <Flask theme="outline" size="24" fill="#4a5565"></Flask>
           <select
-            className='w-full py-3'
-            value={laboratorioId}
-            onChange={(e) => setLaboratorioId(e.target.value)}
-            required
-          >
-            <option value="">Selecione um laboratório</option>
-            {laboratorios.map((lab: { id: string; nome: string }) => (
-              <option key={lab.id} value={lab.id}>
-                {lab.nome}
-              </option>
-            ))}
+              value={laboratorioId}
+              onChange={(e) => setLaboratorioId(e.target.value)}
+              required
+              className="w-full h-full focus:outline-none focus:ring-0 focus:border-none"
+            >
+              <option value="">Selecione um laboratório</option>
+              {laboratorios.map((lab) => (
+                <option key={lab.id} value={lab.id}>
+                  {lab.nome} ({lab.local})
+                </option> 
+              ))}
           </select>
         </div>
-
-        {/* Campos do formulário de reserva */}
-        <div className='flex flex-col w-full items-center justify-between gap-2.5 bg-[#E5E6E8] px-2.5 py-5 rounded-lg'>
-          <div className='flex flex-col'>
-            <label htmlFor="">Data início</label>
-            <input
-              className=''
-              type="datetime-local"
-              value={dataInicio}
-              onChange={(e) => setDataInicio(e.target.value)}
-              required
-            />
-          </div>
-          
-          <ArrowDown theme="outline" size="20" fill="#333"></ArrowDown>
-
-          <div className='flex flex-col'>
-            <label htmlFor="">Data final</label>
-            <input
-              className=''
-              type="datetime-local"
-              value={dataFim}
-              onChange={(e) => setDataFim(e.target.value)}
-              required
-            />
-          </div>
-        </div>
-
-        <div>
-          <label>Professor Responsável</label>
-          <input 
-            className='bg-[#E5E6E8] px-2.5 w-full rounded-lg h-11'
-            type="text"
-            value={professorResponsavel}
-            onChange={(e) => setProfessorResponsavel(e.target.value)}
-            required
+        
+        <div className='w-full flex flex-col'>
+          <label className="mb-0.5">Data e hora de início</label>
+          <DatePicker
+            selected={dataInicio}
+            onChange={(date) => setDataInicio(date)}
+            showTimeSelect
+            timeFormat="HH:mm"
+            timeIntervals={15}
+            dateFormat="dd/MM/yyyy HH:mm" // ✅ Aqui está o que muda
+            placeholderText="Selecione data e hora"
+            className="border p-2 rounded-lg w-full border-gray-400"
+            popperPlacement="bottom"
+            popperClassName="z-50"
           />
         </div>
+          
+        <div className='w-full flex flex-col'>
+          <label className="mb-0.5">Data e hora de fim</label>
+          <DatePicker
+            selected={dataFim}
+            onChange={(date) => setDataFim(date)}
+            showTimeSelect
+            timeFormat="HH:mm"
+            timeIntervals={15}
+            dateFormat="dd/MM/yyyy HH:mm" // ✅ Aqui está o que muda
+            placeholderText="Selecione data e hora"
+            className="border p-2 rounded-lg w-full border-gray-400"
+            popperPlacement="bottom"
+            popperClassName="z-50"
+          />
+        </div>
+              
 
-        <div>
-          <label>Número de Estudantes</label>
+        <div className='w-full flex flex-col'>
+          <label className="mb-0.5">Professor responsável</label>
           <input
-            className='bg-[#E5E6E8] px-2.5 w-full rounded-lg h-11'
+            type="text"
+            value={professor}
+            onChange={(e) => setProfessor(e.target.value)}
+            required
+            className="border p-2 rounded-lg w-full border-gray-400"
+          />
+        </div>
+        
+        <div className='w-full flex flex-col'>
+          <label className="mb-0.5">Número de estudantes</label>
+          <input
             type="number"
             value={numEstudantes}
-            onChange={(e) => setNumEstudantes(Number(e.target.value))}
+            onChange={(e) => setNumEstudantes(parseInt(e.target.value))}
             required
+            className="border p-2 rounded-lg w-full border-gray-400"
+            min={1}
           />
         </div>
-
-        <div className='w-full flex gap-1.5'>
-          <label>Repetir Horário?</label>
+        
+        <div className='w-full flex flex-col'>
+          <label className="mb-0.5">Anotações</label>
+          <textarea
+            value={anotacoes}
+            onChange={(e) => setAnotacoes(e.target.value)}
+            className="border p-2 rounded-lg w-full border-gray-400"
+          />
+        </div>
+        
+        <div className='w-full flex flex-col'>
+          <label className=" flex gap-2 items-center">
           <input
             type="checkbox"
             checked={repetirHorario}
             onChange={(e) => setRepetirHorario(e.target.checked)}
           />
+            Repetir horário semanalmente
+          </label>
         </div>
 
-        <div>
-          <label>Anotações</label>
-          <input
-            className='w-full bg-[#E5E6E8] rounded-lg h-11 px-2.5'
-            value={anotacoes}
-            onChange={(e) => setAnotacoes(e.target.value)}
-          ></input>
-        </div>
-
-        <button className='bg-green-500 h-12 rounded-xl text-white font-semibold text-lg' type="submit">Agendar</button>
+        <button
+          type="submit"
+          className="bg-green-500 hover:bg-green-600 text-white p-2 rounded mt-2"
+        >
+          Confirmar reserva
+        </button>
       </form>
-
-      {message && <p>{message}</p>}
+      {mensagem && (
+        <p className="text-sm mt-2 text-center">{mensagem}</p>
+      )}
     </div>
-  );
-};
+  )
+}
 
-export default FormReserva;
+export default FormReserva

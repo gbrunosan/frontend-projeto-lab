@@ -1,19 +1,24 @@
-import { Metadata } from "next";
-import "./globals.css";
+// app/layout.tsx
+import './globals.css' // se tiver estilos globais
+import Header from './components/Header'
+import { ReactNode } from 'react'
 
-export const metadata: Metadata = {
-  title: "Meu Projeto",
-  description: "Projeto simples com Next.js e Tailwind CSS",
-};
+export const metadata = {
+  title: 'Minha App',
+  description: 'Descrição da aplicação',
+}
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt-BR">
-      <body className="antialiased">{children}</body>
+    <html lang="pt-br">
+      <body className="">
+        <div className="bg-white min-h-screen flex flex-col items-center">
+          <Header />
+          <main className="p-2.5 sm:p-4 bg-white h-full text-neutral-800 w-full max-w-[1000px]">
+            {children}
+          </main>
+        </div>
+      </body>
     </html>
-  );
+  )
 }
