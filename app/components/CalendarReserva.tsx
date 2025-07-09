@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import CardReserva from './CardReserva';
+import { fetchComToken } from '@/utils/fetchComToken'
 
 interface CalendarReservaProps {
   laboratorioId: string;
@@ -29,18 +30,14 @@ const CalendarReserva: React.FC<CalendarReservaProps> = ({ laboratorioId }) => {
     setLoadingReservas(true);
 
     try {
-      const response = await fetch(`http://localhost:5000/api/laboratorio/${laboratorioId}/reservas?data=${formattedDate}`);
-      const data = await response.json();
+      const data = await fetchComToken(
+        `http://localhost:5000/api/laboratorio/${laboratorioId}/reservas?data=${formattedDate}`
+      );
 
-      if (response.ok) {
-        setDadosLaboratorio(data.laboratorio);
-        setReservas(data.reservas);
-      } else {
-        console.error('Erro ao carregar reservas');
-        setReservas([]);
-      }
+      setDadosLaboratorio(data.laboratorio);
+      setReservas(data.reservas);
     } catch (error) {
-      console.error('Erro ao conectar com o servidor');
+      console.error('Erro ao carregar reservas:', error);
       setReservas([]);
     } finally {
       setLoadingReservas(false);

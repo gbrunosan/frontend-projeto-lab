@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker'
 import { format } from 'date-fns'
 import { Flask } from '@icon-park/react';
 import 'react-datepicker/dist/react-datepicker.css'
+import { fetchComToken } from '@/utils/fetchComToken';
 
 type Laboratorio = {
   id: number
@@ -24,11 +25,14 @@ const FormReserva = () => {
   const [mensagem, setMensagem] = useState('')
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/laboratorios')
-      .then(res => res.json())
-      .then(data => setLaboratorios(data))
-      .catch(err => console.error('Erro ao carregar laboratórios:', err))
-  }, [])
+    fetchComToken('http://localhost:5000/api/laboratorios')
+      .then(setLaboratorios)
+      .catch(err => {
+        console.error('Erro ao carregar laboratórios:', err.message);
+      });
+  }, []);
+
+
 
   const formatDateTime = (date: Date | null) => {
     return date ? format(date, "yyyy-MM-dd'T'HH:mm") : ''
@@ -53,30 +57,24 @@ const FormReserva = () => {
     }
 
     try {
-      const res = await fetch('http://localhost:5000/api/add_reserva', {
+      const data = await fetchComToken('http://localhost:5000/api/add_reserva', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
-      })
+      });
 
-      const data = await res.json()
-
-      if (res.ok) {
-        setMensagem('Reserva criada com sucesso!')
-        // resetar campos
-        setDataInicio(null)
-        setDataFim(null)
-        setProfessor('')
-        setNumEstudantes(0)
-        setRepetirHorario(false)
-        setAnotacoes('')
-        setLaboratorioId('')
-      } else {
-        setMensagem(data.error || 'Erro ao criar reserva.')
-      }
-    } catch (error) {
-      setMensagem('Erro de conexão com o servidor.')
+      setMensagem('Reserva criada com sucesso!');
+      // resetar campos
+      setDataInicio(null);
+      setDataFim(null);
+      setProfessor('');
+      setNumEstudantes(0);
+      setRepetirHorario(false);
+      setAnotacoes('');
+      setLaboratorioId('');
+    } catch (error: any) {
+      setMensagem(error.message || 'Erro ao criar reserva.');
     }
+
   }
 
   return (

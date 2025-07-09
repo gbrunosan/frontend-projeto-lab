@@ -1,6 +1,7 @@
 'use client';  // Diretiva para marcar como um componente do lado do cliente
 
 import React, { useState } from 'react';
+import { fetchComToken } from '@/utils/fetchComToken';
 
 function CriarLaboratorio() {
   const [nome, setNome] = useState('');
@@ -17,25 +18,18 @@ function CriarLaboratorio() {
     };
 
     try {
-      // Envia a requisição para a API Flask
-      const response = await fetch('http://localhost:5000/api/add_laboratorio', {
+      await fetchComToken('http://localhost:5000/api/add_laboratorio', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(data),
       });
 
-      const result = await response.json();
-
-      if (response.ok) {
-        setMessage('Laboratório criado com sucesso!');
-      } else {
-        setMessage(`Erro: ${result.message}`);
-      }
-    } catch (error) {
-      setMessage('Erro ao conectar com o servidor.');
+      setMessage('Laboratório criado com sucesso!');
+      setNome('');
+      setLocal('');
+    } catch (error: any) {
+      setMessage(error.message || 'Erro ao criar laboratório.');
     }
+
   };
 
   return (
