@@ -1,18 +1,31 @@
-// utils/fetchComToken.ts
 'use client';
 
 import { useRouter } from 'next/navigation';
+
+// Função para obter o token do cookie
+function getCookie(name: string): string | null {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
+  return null;
+}
 
 export async function fetchComToken(
   url: string,
   options: RequestInit = {}
 ): Promise<any> {
-  const token = localStorage.getItem('token');
+  const token = getCookie('token');  // Usando a função para pegar o token dos cookies
+
+  if (!token) {
+    alert('Token não encontrado. Por favor, faça login novamente.');
+    window.location.href = '/login';
+    return;
+  }
 
   const headers = {
     'Content-Type': 'application/json',
     ...(options.headers || {}),
-    'Authorization': `Bearer ${token}`,
+    'Authorization': `Bearer ${token}`,  // Adicionando o token no cabeçalho
   };
 
   const response = await fetch(url, {
@@ -24,7 +37,7 @@ export async function fetchComToken(
     const data = await response.json();
     if (data.msg?.includes('expired') || data.msg?.includes('Missing')) {
       alert('Sua sessão expirou ou é inválida. Faça login novamente.');
-      localStorage.clear();
+      // Limpar cookies e redirecionar para o login
       document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
       window.location.href = '/login';
       return;

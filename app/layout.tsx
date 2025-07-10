@@ -19,9 +19,9 @@ export default function RootLayout({
     <html lang="pt-br">
       <body>
         {auth || (
-          <div className="bg-white min-h-screen flex flex-col items-center">
+          <div className="bg-gradient-to-b from-tertiary to-[#f0eeeb] min-h-screen flex flex-col items-center">
             <Header />
-            <main className="p-2.5 sm:p-4 bg-white h-full text-neutral-800 w-full max-w-[1000px]">
+            <main className="p-4 sm:p-4  h-full text-neutral-800 w-full max-w-[1000px]">
               {children}
             </main>
           </div>

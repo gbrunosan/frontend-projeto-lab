@@ -26,21 +26,21 @@ const ReservaCard: React.FC<Props> = ({ reserva }) => {
   }
 
   return (
-    <div className="bg-[#f9f9f9] border border-gray-300 rounded-lg p-4 mb-3 shadow-sm text-neutral-800">
-      <p className="font-semibold text-base mb-1">
-        Professor: <span className="font-normal">{reserva.professor_responsavel}</span>
+    <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 mb-3 shadow-sm text-sm text-textSecondary">
+      <p className="font-bold text-base mb-1 text-primary">
+        Reservado por <span className="">{reserva.professor_responsavel}</span>
       </p>
-      <p className="text-sm">
-        <strong>Início:</strong> {formatDateTime(reserva.data_inicio)}
+      <p>
+        <span className='text-neutral-600 font-semibold'>Início:</span> {formatDateTime(reserva.data_inicio)}
       </p>
-      <p className="text-sm">
-        <strong>Fim:</strong> {formatDateTime(reserva.data_fim)}
+      <p>
+        <span className='text-neutral-600 font-semibold'>Fim:</span> {formatDateTime(reserva.data_fim)}
       </p>
-      <p className="text-sm">
-        <strong>Estudantes:</strong> {reserva.num_estudantes}
+      <p>
+        <span className='text-neutral-600 font-semibold'>Número de estudantes:</span> {reserva.num_estudantes}
       </p>
       {reserva.anotacoes && (
-        <div className="mt-2 text-sm">
+        <div className="mt-2 p-2">
           <strong>Obs:</strong> {reserva.anotacoes}
         </div>
       )}

@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import { Plus } from '@icon-park/react';
 import CardReserva from './CardReserva';
-import { fetchComToken } from '@/utils/fetchComToken'
+import { fetchComToken } from '@/utils/fetchComToken';
+import { useRouter } from 'next/navigation';
 
 interface CalendarReservaProps {
   laboratorioId: string;
@@ -15,6 +17,7 @@ const CalendarReserva: React.FC<CalendarReservaProps> = ({ laboratorioId }) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [dadosLaboratorio, setDadosLaboratorio] = useState<{ nome: string; local: string } | null>(null);
   const [loadingReservas, setLoadingReservas] = useState(false);
+  const router = useRouter();
 
   const formatDate = (date: Date) => {
     const y = date.getFullYear();
@@ -60,6 +63,10 @@ const CalendarReserva: React.FC<CalendarReservaProps> = ({ laboratorioId }) => {
     }
   };
 
+  const handleCreateReserva = () => {
+    // Redireciona para a página de criação de reserva com o laboratorioId
+    router.push(`/formReserva?laboratorioId=${laboratorioId}`);
+  };
 
   return (
     <div className='w-full flex flex-col items-center text-neutral-800 mt-2 px-1'>
@@ -69,20 +76,31 @@ const CalendarReserva: React.FC<CalendarReservaProps> = ({ laboratorioId }) => {
         </div>
       ) : (
         <>
-          <div className='w-full flex flex-col mb-4 mt-1'>
-            <span className='font-bold text-xl leading-5'>
-              Reservas do {dadosLaboratorio.nome} 
-            </span>
-            <span className='text-neutral-500 font-semibold'>{dadosLaboratorio.local}</span>
+          <div className='flex justify-between gap-x-1.5 items-start w-full mt-1 my-2'>
+            <div className='flex flex-col'>
+              <span className='font-bold text-2xl leading-6 text-textPrimary'>
+                Reservas do {dadosLaboratorio.nome}
+              </span>
+              <span className='text-textSecondary font-semibold text-lg first-letter:uppercase'>{dadosLaboratorio.local}</span>
+            </div>
+            <div>
+              <button
+                onClick={handleCreateReserva}  // Redireciona para a página de criação de reserva
+                className="bg-primary hover:bg-green-700 duration-150 font-semibold text-white p-2 px-3 rounded-lg flex gap-1"
+              >
+                  <Plus theme='outline' size='22' strokeWidth={5}/>
+                  Reserva
+              </button>
+            </div>
           </div>
           <Calendar
-            className='text-neutral-800 custom-calendar'
+            className='text-textSecondary custom-calendar'
             onChange={handleDateChange}
             value={selectedDate}
           />
 
-          <div className='gap-2.5 w-full mt-4 flex flex-col'>
-            <h2 className='font-bold'>
+          <div className='gap-2.5 w-full mt-4 flex flex-col bg-gradient-to-b from-white to-gray-50 p-4 py-3 rounded-lg'>
+            <h2 className='font-bold text-textSecondary text-lg'>
               Reservas para {selectedDate.toLocaleDateString('pt-BR')}
             </h2>
 
@@ -98,7 +116,6 @@ const CalendarReserva: React.FC<CalendarReservaProps> = ({ laboratorioId }) => {
               )}
             </div>
           </div>
-
         </>
       )}
     </div>

@@ -22,8 +22,8 @@ const CalendarioLaboratorio = () => {
   }
 
   return (
-    <div className='bg-white w-full'>
-      <div  onClick={handleGoBack} className='flex items-center text-neutral-800 gap-1.5 bg-white cursor-pointer'>
+    <div className='w-full'>
+      <div  onClick={handleGoBack} className='w-fit pl-0 p-1 text-neutral-800 flex gap-1.5 items-center cursor-pointer font-semibold'>
         <div>
             <Left theme="outline" size="24" fill="#333"/>
         </div>

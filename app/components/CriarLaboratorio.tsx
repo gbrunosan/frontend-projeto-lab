@@ -33,11 +33,14 @@ function CriarLaboratorio() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="nome">Nome do Laboratório:</label>
+    <div className='bg-white rounded-lg flex flex-col items-center p-6'>
+      <span className='text-[22px] font-bold text-primary'>Criar Novo Laboratório</span>
+      
+      <form onSubmit={handleSubmit} className='w-full flex flex-col gap-4 mt-4'>
+        <div className='flex flex-col gap-1'>
+          <label htmlFor="nome" className='text-textSecondary'>Nome do Laboratório</label>
           <input
+            className='border border-secondary rounded-lg p-2'
             type="text"
             id="nome"
             value={nome}
@@ -45,9 +48,10 @@ function CriarLaboratorio() {
             required
           />
         </div>
-        <div>
-          <label htmlFor="local">Localização:</label>
+        <div className='flex flex-col gap-1'>
+          <label htmlFor="local" className='text-textSecondary'>Localização</label>
           <input
+            className='border border-secondary rounded-lg p-2'
             type="text"
             id="local"
             value={local}
@@ -55,7 +59,7 @@ function CriarLaboratorio() {
             required
           />
         </div>
-        <button type="submit">Criar Laboratório</button>
+        <button type="submit" className='bg-primary hover:bg-green-700 duration-100 px-3 h-11 rounded-md shadow-md font-semibold text-white'>Criar Laboratório</button>
       </form>
       {message && <p>{message}</p>}
     </div>
