@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { useUsuarioStore } from "../store/useUsuarioStore"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { PreviewCloseOne, PreviewOpen } from "@icon-park/react";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("")
-  const [senha, setSenha] = useState("")
-  const [erro, setErro] = useState("")
-  const [carregando, setCarregando] = useState(false)
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState("");
+  const [carregando, setCarregando] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const setUsuario = useUsuarioStore((state) => state.setUsuario)
-  const router = useRouter()
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setCarregando(true)
-    setErro("")
+    e.preventDefault();
+    setCarregando(true);
+    setErro("");
 
     try {
       const res = await fetch("http://localhost:5000/api/login", {
@@ -25,29 +25,27 @@ export default function LoginForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, senha }),
-      })
+      });
 
-      const data = await res.json()
+      const data = await res.json();
 
       if (!res.ok) {
-        setErro(data.error || "Erro no login")
-        return
+        setErro(data.error || "Erro no login");
+        return;
       }
 
-      const userData = { email: data.email, nome: data.nome, tipo: data.tipo }
-      localStorage.setItem("user", JSON.stringify(userData))
+      const userData = { email: data.email, nome: data.nome, tipo: data.tipo };
+      localStorage.setItem("user", JSON.stringify(userData));
 
-      document.cookie = `token=${data.token}; path=/`
+      document.cookie = `token=${data.token}; path=/`;
 
-      setUsuario(userData)
-
-      window.location.href = "/"
+      router.push("/");
     } catch (err) {
-      setErro("Erro na conexão com o servidor")
+      setErro("Erro na conexão com o servidor");
     } finally {
-      setCarregando(false)
+      setCarregando(false);
     }
-  }
+  };
 
   return (
     <div className="bg-white shadow-md rounded-xl px-8 w-full text-neutral-800 flex flex-col gap-5 min-h-[500px] h-[55%] max-w-[550px] justify-center">
@@ -69,15 +67,26 @@ export default function LoginForm() {
             />
           </div>
 
-          <div className="">
+          <div className="relative">
             <label className="block text-textSecondary text-sm font-bold mb-1">Senha</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
               className="border rounded-lg border-secondary w-full py-2 px-3 text-gray-700"
               required
             />
+            <button
+              type="button"
+              className="absolute right-3 bottom-2.5"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <PreviewCloseOne theme="outline" size={24} fill="#333" />
+              ) : (
+                <PreviewOpen theme="outline" size={24} fill="#333" />
+              )}
+            </button>
           </div>
         </div>
         
@@ -85,13 +94,13 @@ export default function LoginForm() {
           <button
             type="submit"
             disabled={carregando}
-            className=" bg-primary hover:bg-green-700 duration-150 tracking-wide text-white font-bold py-2.5 px-4 rounded-lg w-full mb-2"
+            className="bg-primary hover:bg-green-700 duration-150 tracking-wide text-white font-bold py-2.5 px-4 rounded-lg w-full mb-2"
           >
             {carregando ? "Entrando..." : "Entrar"}
           </button>
-          {erro && <div className=" text-[#e45156]">{erro}</div>}
+          {erro && <div className="text-[#e45156]">{erro}</div>}
         </div>
       </form>
     </div>
-  )
+  );
 }
