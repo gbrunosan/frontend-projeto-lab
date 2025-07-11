@@ -1,17 +1,16 @@
-'use client';  // Diretiva para marcar como um componente do lado do cliente
+'use client';
 
 import React, { useState } from 'react';
 import { fetchComToken } from '@/utils/fetchComToken';
-import Toast from '@/app/components/Toast'; // Importando o componente Toast
+import Toast from '@/app/components/Toast';
 
 function CriarLaboratorio() {
   const [nome, setNome] = useState('');
   const [local, setLocal] = useState('');
-  const [toast, setToast] = useState<any>(null); // Estado para armazenar a mensagem do Toast
+  const [toast, setToast] = useState<any>(null);
 
-  // Função para lidar com o envio do formulário
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();  // Previne o comportamento padrão de envio de formulário
+    e.preventDefault();
     
     const data = {
       nome: nome,
@@ -45,13 +44,12 @@ function CriarLaboratorio() {
     <div className='bg-white rounded-lg flex flex-col p-6'>
       <span className='text-[22px] font-bold text-primary'>Criar Novo Laboratório</span>
       
-      {/* Exibindo o Toast se houver */}
       {toast && (
         <Toast
           type={toast.type}
           title={toast.title}
           description={toast.description}
-          onClose={() => setToast(null)} // Fecha o toast quando o botão de fechar é clicado
+          onClose={() => setToast(null)}
         />
       )}
 

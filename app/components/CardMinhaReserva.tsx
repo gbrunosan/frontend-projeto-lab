@@ -1,6 +1,6 @@
 import { Pencil, DeleteFive, CloseSmall } from "@icon-park/react";
 import { useState, useEffect } from "react";
-import { fetchComToken } from "@/utils/fetchComToken"; // Importe a função de fetch
+import { fetchComToken } from "@/utils/fetchComToken";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -11,7 +11,7 @@ type ReservaProps = {
   professorResponsavel: string;
   numEstudantes: number;
   anotacoes?: string;
-  onRefresh?: () => void; // Adiciona prop opcional para atualizar
+  onRefresh?: () => void;
 };
 
 const CardMinhaReserva = ({
@@ -23,7 +23,6 @@ const CardMinhaReserva = ({
   anotacoes,
   onRefresh,
 }: ReservaProps) => {
-  // Estado local para refletir dados atualizados após edição
   const [localData, setLocalData] = useState({
     dataInicio,
     dataFim,
@@ -32,9 +31,9 @@ const CardMinhaReserva = ({
     anotacoes: anotacoes || "",
   });
 
-  const [showModal, setShowModal] = useState(false); // Controla a visibilidade do modal
-  const [isVisible, setIsVisible] = useState(false); // Para animação do modal
-  const [isEditing, setIsEditing] = useState(false); // Verifica se é para editar ou excluir
+  const [showModal, setShowModal] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     data_inicio: dataInicio,
     data_fim: dataFim,
@@ -43,7 +42,6 @@ const CardMinhaReserva = ({
     anotacoes: anotacoes || "",
   });
 
-  // Adiciona estados para datas como Date
   const [dataInicioEdit, setDataInicioEdit] = useState<Date | null>(
     dataInicio ? new Date(dataInicio) : null
   );
@@ -51,7 +49,6 @@ const CardMinhaReserva = ({
     dataFim ? new Date(dataFim) : null
   );
 
-  // Atualiza formData ao mudar datas
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
@@ -60,7 +57,6 @@ const CardMinhaReserva = ({
     }));
   }, [dataInicioEdit, dataFimEdit]);
 
-  // Sincroniza localData com props iniciais (caso o card seja recriado)
   useEffect(() => {
     setLocalData({
       dataInicio,
@@ -71,42 +67,38 @@ const CardMinhaReserva = ({
     });
   }, [dataInicio, dataFim, professorResponsavel, numEstudantes, anotacoes]);
 
-  // Função para formatar as datas para o formato brasileiro
   const formatarData = (data: string) => {
     const dataObj = new Date(data);
     return dataObj.toLocaleString("pt-BR", {
-      weekday: "short", // opcional, exibe o dia da semana
-      day: "2-digit", // dia com 2 dígitos
-      month: "2-digit", // mês com 2 dígitos
-      year: "numeric", // ano completo
-      hour: "2-digit", // hora com 2 dígitos
-      minute: "2-digit", // minutos com 2 dígitos
+      weekday: "short", // exibe o dia da semana
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
       hour12: false, // usar formato 24 horas
     });
   };
 
-  // Função para abrir o modal de edição
   const editarReserva = () => {
-    setIsEditing(true); // Indica que estamos editando
-    setShowModal(true); // Abre o modal
-    setTimeout(() => setIsVisible(true), 10); // Garante animação de entrada
+    setIsEditing(true);
+    setShowModal(true);
+    setTimeout(() => setIsVisible(true), 10);
   };
 
-  // Função para abrir o modal de exclusão
   const excluirReserva = () => {
-    setIsEditing(false); // Indica que estamos excluindo
-    setShowModal(true); // Abre o modal
-    setTimeout(() => setIsVisible(true), 10); // Garante animação de entrada
+    setIsEditing(false);
+    setShowModal(true);
+    setTimeout(() => setIsVisible(true), 10);
   };
 
-  // Função para salvar a reserva editada
   const salvarEdicao = async () => {
     try {
       const response = await fetchComToken(`reserva/${id}`, {
         method: "PUT",
         body: JSON.stringify(formData),
       });
-      // Atualiza o estado local com os dados editados
+
       setLocalData({
         dataInicio: formData.data_inicio,
         dataFim: formData.data_fim,
@@ -114,40 +106,37 @@ const CardMinhaReserva = ({
         numEstudantes: formData.num_estudantes,
         anotacoes: formData.anotacoes,
       });
-      setShowModal(false); // Fecha o modal
-      // Não chama onRefresh, pois o card já atualizou localmente
+      setShowModal(false);
     } catch (error) {
       console.error(error);
     }
   };
 
-  // Função para excluir a reserva
   const confirmarExclusao = async () => {
     try {
       await fetchComToken(`reserva/${id}`, { method: "DELETE" });
-      setShowModal(false); // Fecha o modal
-      if (onRefresh) onRefresh(); // Atualiza lista
+      setShowModal(false);
+      if (onRefresh) onRefresh();
     } catch (error) {
       console.error(error);
     }
   };
 
-  // Função para fechar o modal
   const fecharModal = () => {
     setIsVisible(false);
-    setTimeout(() => setShowModal(false), 150); // tempo igual ao da transição
+    setTimeout(() => setShowModal(false), 150);
   };
 
   return (
     <div className="bg-white shadow-md rounded-lg p-4 mb-4 border border-gray-300 text-textSecondary">
-      <p className="font-semibold text-lg">{localData.professorResponsavel}</p>
-      <p className="text-sm">
+      <p className="font-semibold text-lg md:text-xl">{localData.professorResponsavel}</p>
+      <p className="text-sm md:text-base">
         Data de Início: {formatarData(localData.dataInicio)}
       </p>
-      <p className="text-sm">Data de Fim: {formatarData(localData.dataFim)}</p>
-      <p className="text-sm">Número de Estudantes: {localData.numEstudantes}</p>
+      <p className="text-sm md:text-base">Data de Fim: {formatarData(localData.dataFim)}</p>
+      <p className="text-sm md:text-base">Número de Estudantes: {localData.numEstudantes}</p>
       {localData.anotacoes && (
-        <p className="text-sm mt-2 text-gray-600">
+        <p className="text-sm md:text-base mt-2 text-gray-600">
           Anotações: {localData.anotacoes}
         </p>
       )}
@@ -168,7 +157,6 @@ const CardMinhaReserva = ({
         </button>
       </div>
 
-      {/* Modal */}
       {showModal && (
         <div
           onClick={fecharModal}

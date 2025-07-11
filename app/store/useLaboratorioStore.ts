@@ -1,11 +1,9 @@
-// app/store/useLaboratorioStore.ts
 import { create } from 'zustand'
 
 type Laboratorio = {
   id: string
   nome: string
   local: string
-  // Adicione outros campos que quiser guardar
 }
 
 type Store = {

@@ -18,7 +18,7 @@ type Laboratorio = {
 
 type ReservasPorLaboratorioProps = {
   laboratorios: Laboratorio[];
-  onRefresh?: () => void; // Função opcional para atualizar reservas
+  onRefresh?: () => void;
 };
 
 const ReservasPorLaboratorio = ({ laboratorios, onRefresh }: ReservasPorLaboratorioProps) => {
@@ -27,18 +27,17 @@ const ReservasPorLaboratorio = ({ laboratorios, onRefresh }: ReservasPorLaborato
       {laboratorios.map((laboratorio) => (
         <div key={laboratorio.id} className="space-y-4">
           <h2 className="text-lg font-semibold text-primary">Reservas no {laboratorio.nome}</h2>
-          <div className="space-y-4 px-4">
-            {/* Verificação para garantir que reservas seja um array */}
+          <div className="space-y-4 px-1">
             {(laboratorio.reservas || []).map((reserva) => (
               <CardMinhaReserva
                 key={reserva.id}
                 id={reserva.id}
-                dataInicio={reserva.data_inicio}  // Assumindo que o dado vem em snake_case
-                dataFim={reserva.data_fim}        // Assumindo que o dado vem em snake_case
-                professorResponsavel={reserva.professor_responsavel}  // Assumindo que o dado vem em snake_case
-                numEstudantes={reserva.num_estudantes}  // Assumindo que o dado vem em snake_case
+                dataInicio={reserva.data_inicio}
+                dataFim={reserva.data_fim}
+                professorResponsavel={reserva.professor_responsavel}
+                numEstudantes={reserva.num_estudantes}
                 anotacoes={reserva.anotacoes}
-                onRefresh={onRefresh} // Passa a função para o card
+                onRefresh={onRefresh}
               />
             ))}
           </div>

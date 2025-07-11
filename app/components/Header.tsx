@@ -1,4 +1,3 @@
-// app/components/Header.tsx
 "use client";
 import { PersonalPrivacy } from "@icon-park/react";
 import Link from "next/link";
@@ -11,7 +10,7 @@ export default function Header() {
         <div>
           <Link href="/">
             <img
-              src="./static/if_logo_simples.svg"
+              src="/static/if_logo_simples.svg"
               alt=""
               className="h-11 cursor-pointer"
             />
@@ -19,7 +18,6 @@ export default function Header() {
         </div>
 
         <div>
-          {/* <PersonalPrivacy theme="outline" size="26"/> */}
           <Menu></Menu>
         </div>
       </div>

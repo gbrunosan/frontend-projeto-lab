@@ -1,18 +1,24 @@
-// /app/components/Toast.jsx
 "use client";
 
 import { useEffect, useState } from "react";
 import { Caution, CheckCorrect, CloseSmall } from "@icon-park/react";
 
-const Toast = ({ type, title, description, onClose }) => {
+interface ToastProps {
+  type: "success" | "error";
+  title: string;
+  description: string;
+  onClose: () => void;
+}
+
+const Toast = ({ type, title, description, onClose }: ToastProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
     const timer = setTimeout(() => {
       setIsVisible(false);
-      setTimeout(onClose, 150); // Aguarda animação antes de fechar
-    }, 50000);
+      setTimeout(onClose, 150);
+    }, 5000);
     return () => clearTimeout(timer);
   }, [onClose]);
 
@@ -31,18 +37,18 @@ const Toast = ({ type, title, description, onClose }) => {
         {type === "error" ? (
           <Caution theme="outline" size="24" fill="#333" />
         ) : (
-          <CheckCorrect theme="outline" size="24" fill="#333" strokeWidth={5}/>
+          <CheckCorrect theme="outline" size="24" fill="#333" strokeWidth={5} />
         )}
 
         <div>
           <h4 className="font-bold text-lg">{title}</h4>
-          <p className=" text-neutral-700 text-sm">{description}</p>
+          <p className="text-neutral-700 text-sm">{description}</p>
         </div>
       </div>
       <button
         onClick={() => {
           setIsVisible(false);
-          setTimeout(onClose, 150); // Aguarda animação antes de fechar
+          setTimeout(onClose, 150);
         }}
         className="absolute top-3 right-3 text-gray-600 hover:text-gray-900"
         tabIndex={0}

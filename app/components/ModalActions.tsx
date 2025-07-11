@@ -18,7 +18,6 @@ const ModalActions: React.FC<ModalActionsProps> = ({
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
 
-  // Fechar o modal ao clicar fora da área do modal
   const handleOutsideClick = (e: React.MouseEvent) => {
     const modalContent = e.target as HTMLElement;
     if (modalContent.classList.contains("modal-container")) {
@@ -26,15 +25,13 @@ const ModalActions: React.FC<ModalActionsProps> = ({
     }
   };
 
-  // Função para animar saída antes de desmontar
   const handleClose = () => {
     setIsVisible(false);
     setTimeout(() => {
       onClose();
-    }, 150); // tempo igual ao da transição
+    }, 150);
   };
 
-  // Fechar o modal ao pressionar a tecla 'Escape'
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -63,7 +60,7 @@ const ModalActions: React.FC<ModalActionsProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          onClick={handleClose} // Fecha o modal
+          onClick={handleClose}
           className="absolute top-2 right-2 border border-gray-600 text-gray-600 rounded-lg p-1 hover:border-red-500 hover:text-red-500 duration-150"
         >
           <CloseSmall theme="outline" size="24" strokeWidth={4} />

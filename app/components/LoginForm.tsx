@@ -1,9 +1,8 @@
-// app/components/LoginForm.tsx
 "use client"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { useUsuarioStore } from "../store/useUsuarioStore" // Usando a store para armazenar o usuário
+import { useUsuarioStore } from "../store/useUsuarioStore"
 
 export default function LoginForm() {
   const [email, setEmail] = useState("")
@@ -11,7 +10,7 @@ export default function LoginForm() {
   const [erro, setErro] = useState("")
   const [carregando, setCarregando] = useState(false)
 
-  const setUsuario = useUsuarioStore((state) => state.setUsuario) // Usando a store para armazenar o usuário
+  const setUsuario = useUsuarioStore((state) => state.setUsuario)
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,18 +34,14 @@ export default function LoginForm() {
         return
       }
 
-      // Salva no localStorage na chave 'user'
       const userData = { email: data.email, nome: data.nome, tipo: data.tipo }
       localStorage.setItem("user", JSON.stringify(userData))
 
-      // Salva no cookie o token (para manutenção de sessão)
       document.cookie = `token=${data.token}; path=/`
 
-      // Armazenar as informações do usuário na store
       setUsuario(userData)
 
-      // Redireciona para a página de lista de laboratórios
-      window.location.href = "/"  // Redirecionamento usando a URL diretamente
+      window.location.href = "/"
     } catch (err) {
       setErro("Erro na conexão com o servidor")
     } finally {

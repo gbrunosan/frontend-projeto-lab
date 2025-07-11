@@ -7,31 +7,28 @@ import { Left } from '@icon-park/react';
 
 const ReservaPage = () => {
   const router = useRouter();
-  const [loading, setLoading] = useState(true); // Adicionando o estado de loading
+  const [loading, setLoading] = useState(true);
 
   const handleGoBack = () => {
     router.back();
   };
 
   useEffect(() => {
-    // Aqui você pode definir a lógica de carregamento,
-    // como checar se os dados já estão prontos.
     const params = new URLSearchParams(window.location.search);
     const laboratorioId = params.get('laboratorioId');
 
-    // Simulando o delay do carregamento
     setTimeout(() => {
       if (laboratorioId) {
-        setLoading(false); // Caso o laboratorioId esteja na URL, podemos exibir o formulário
+        setLoading(false);
       } else {
-        setLoading(false); // Caso contrário, exibe também
+        setLoading(false);
       }
-    }, 1000); // Simula o delay de 1 segundo
+    }, 1000);
 
   }, []);
 
   return (
-    <div>
+    <div className='md:mt-3'>
       <div
         onClick={handleGoBack}
         className='w-fit pl-0 p-1 text-neutral-800 flex gap-1.5 items-center cursor-pointer font-semibold mb-1'
@@ -42,14 +39,12 @@ const ReservaPage = () => {
         <span>Voltar</span>
       </div>
 
-      {/* Se estiver carregando, mostra o loading */}
       {loading && (
         <div className='flex justify-center items-center mt-4'> 
           <p className='text-gray-500'>Carregando dados...</p>
         </div>
       )}
 
-      {/* Aqui usamos o 'hidden' para esconder o FormReserva enquanto está carregando */}
       <div hidden={loading} className={`w-full justify-center${!loading ? ' flex' : ''}`}>
         <FormReserva />
       </div>

@@ -1,25 +1,23 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { fetchComToken } from '@/utils/fetchComToken'; // Importando a função de requisição com token
-import Toast from './Toast'; // Importando o Toast
+import { fetchComToken } from '@/utils/fetchComToken';
+import Toast from './Toast';
+import { ToastProps } from '@/types/toastProps'; 
 
 export default function NovoUsuario() {
   const router = useRouter();
 
-  // Estados para os dados do formulário
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [tipo, setTipo] = useState('professor');
   const [loading, setLoading] = useState(false);
-  const [toast, setToast] = useState(null); // Estado para armazenar a mensagem do Toast
+  const [toast, setToast] = useState<ToastProps | null>(null);
 
-  // Função de envio de dados
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
 
-    // Validar campos obrigatórios
     if (!nome || !email || !senha || !tipo) {
       setToast({
         type: 'error',
@@ -32,7 +30,6 @@ export default function NovoUsuario() {
     setLoading(true);
 
     try {
-      // Usando fetchComToken diretamente, como você mostrou, sem URL direta
       const response = await fetchComToken('usuarios', {
         method: 'POST',
         body: JSON.stringify({ nome, email, senha, tipo }),
@@ -51,7 +48,7 @@ export default function NovoUsuario() {
       setEmail('');
       setSenha('');
       setTipo('professor');
-    } catch (err) {
+    } catch (err: any) {
       setToast({
         type: 'error',
         title: 'Erro',
@@ -63,16 +60,15 @@ export default function NovoUsuario() {
   };
 
   return (
-    <div className="bg-gray-50 rounded-lg p-4 mt-2">
+    <div className="bg-gray-50 rounded-lg p-4 pb-6 mt-2 max-w-[700px] w-full">
       <h1 className="text-primary font-bold text-[22px]">Criar novo usuário</h1>
 
-      {/* Exibindo o Toast se houver */}
       {toast && (
         <Toast
           type={toast.type}
           title={toast.title}
           description={toast.description}
-          onClose={() => setToast(null)} // Fecha o toast quando o botão de fechar é clicado
+          onClose={() => setToast(null)}
         />
       )}
 

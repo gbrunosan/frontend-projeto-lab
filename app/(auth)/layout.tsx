@@ -1,7 +1,11 @@
 import '@/styles/globals.css'
+import { ReactNode } from 'react'
 
-// app/layout.js
-export default function RootLayout({ children }) {
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="pt-br">
       <head>

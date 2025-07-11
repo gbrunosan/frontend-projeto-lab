@@ -51,8 +51,7 @@ const CalendarReserva: React.FC<CalendarReservaProps> = ({ laboratorioId }) => {
     fetchReservas(selectedDate);
   }, [selectedDate, laboratorioId]);
 
-  const handleDateChange = (date: Date) => {
-    // Só atualiza se a data for diferente da já selecionada (comparando só o dia, mês e ano)
+  const handleDateChange = (date: any) => {
     const isSameDay =
       date.getDate() === selectedDate.getDate() &&
       date.getMonth() === selectedDate.getMonth() &&
@@ -64,7 +63,6 @@ const CalendarReserva: React.FC<CalendarReservaProps> = ({ laboratorioId }) => {
   };
 
   const handleCreateReserva = () => {
-    // Redireciona para a página de criação de reserva com o laboratorioId
     router.push(`/formReserva?laboratorioId=${laboratorioId}`);
   };
 
@@ -85,7 +83,7 @@ const CalendarReserva: React.FC<CalendarReservaProps> = ({ laboratorioId }) => {
             </div>
             <div>
               <button
-                onClick={handleCreateReserva}  // Redireciona para a página de criação de reserva
+                onClick={handleCreateReserva}
                 className="bg-primary hover:bg-green-700 duration-150 font-semibold text-white p-2 px-3 rounded-lg flex gap-1"
               >
                   <Plus theme='outline' size='22' strokeWidth={5}/>
@@ -99,7 +97,7 @@ const CalendarReserva: React.FC<CalendarReservaProps> = ({ laboratorioId }) => {
             value={selectedDate}
           />
 
-          <div className='gap-2.5 w-full mt-4 flex flex-col bg-gradient-to-b from-white to-gray-50 p-4 py-3 rounded-lg'>
+          <div className='gap-2.5 w-full mt-4 flex flex-col bg-gradient-to-b from-white to-gray-50 md:to-white p-4 py-3 rounded-lg'>
             <h2 className='font-bold text-textSecondary text-lg'>
               Reservas para {selectedDate.toLocaleDateString('pt-BR')}
             </h2>
