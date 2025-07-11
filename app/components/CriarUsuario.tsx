@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { fetchComToken } from '@/utils/fetchComToken';
 import Toast from './Toast';
 import { ToastProps } from '@/types/toastProps'; 
+import { PreviewCloseOne, PreviewOpen } from "@icon-park/react";
 
 export default function NovoUsuario() {
   const router = useRouter();
@@ -14,6 +15,7 @@ export default function NovoUsuario() {
   const [tipo, setTipo] = useState('professor');
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<ToastProps | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e:any) => {
     e.preventDefault();
@@ -95,15 +97,26 @@ export default function NovoUsuario() {
           />
         </div>
 
-        <div>
+        <div className='relative'>
           <label className="block mb-1 text-textPrimary">Senha</label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
             className="border border-secondary text-textSecondary p-2 w-full rounded-lg"
             placeholder="Senha do usuário"
           />
+          <button
+              type="button"
+              className="absolute right-3 bottom-2.5"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <PreviewCloseOne theme="outline" size={24} fill="#333" />
+              ) : (
+                <PreviewOpen theme="outline" size={24} fill="#333" />
+              )}
+          </button>
         </div>
 
         <div>
