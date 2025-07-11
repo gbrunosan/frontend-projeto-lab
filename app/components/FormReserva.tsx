@@ -7,6 +7,7 @@ import { Flask } from '@icon-park/react'
 import 'react-datepicker/dist/react-datepicker.css'
 import { fetchComToken } from '@/utils/fetchComToken'
 import { useRouter } from 'next/navigation'
+import Toast from '@/app/components/Toast' // Importando o componente Toast
 
 type Laboratorio = {
   id: number
@@ -24,6 +25,7 @@ const FormReserva = () => {
   const [repetirHorario, setRepetirHorario] = useState(false)
   const [anotacoes, setAnotacoes] = useState('')
   const [mensagem, setMensagem] = useState('')
+  const [toast, setToast] = useState<any>(null) // Estado para armazenar o Toast
   const router = useRouter()
 
   useEffect(() => {
@@ -52,7 +54,11 @@ const FormReserva = () => {
     e.preventDefault()
 
     if (!dataInicio || !dataFim || !laboratorioId) {
-      setMensagem('Preencha todos os campos obrigatórios.')
+      setToast({
+        type: 'error',
+        title: 'Erro',
+        description: 'Preencha todos os campos obrigatórios.',
+      })
       return
     }
 
@@ -72,7 +78,12 @@ const FormReserva = () => {
         body: JSON.stringify(payload),
       })
 
-      setMensagem('Reserva criada com sucesso!')
+      setToast({
+        type: 'success',
+        title: 'Sucesso',
+        description: 'Reserva criada com sucesso!',
+      })
+
       // resetar campos
       setDataInicio(null)
       setDataFim(null)
@@ -82,7 +93,11 @@ const FormReserva = () => {
       setAnotacoes('')
       setLaboratorioId('')
     } catch (error: any) {
-      setMensagem(error.message || 'Erro ao criar reserva.')
+      setToast({
+        type: 'error',
+        title: 'Erro',
+        description: error.message || 'Erro ao criar reserva.',
+      })
     }
   }
 
@@ -91,6 +106,17 @@ const FormReserva = () => {
       <span className='text-[22px] font-bold track text-textPrimary'>
         Criar nova reserva
       </span>
+
+      {/* Exibindo o Toast se houver */}
+      {toast && (
+        <Toast
+          type={toast.type}
+          title={toast.title}
+          description={toast.description}
+          onClose={() => setToast(null)} // Fecha o toast quando o botão de fechar é clicado
+        />
+      )}
+
       <form
         onSubmit={handleSubmit}
         className='flex flex-col gap-4 w-full mx-auto p-3 py-4 rounded-lg text-textSecondary'
@@ -194,7 +220,6 @@ const FormReserva = () => {
           Confirmar reserva
         </button>
       </form>
-      {mensagem && <p className='text-sm mt-2 text-center'>{mensagem}</p>}
     </div>
   )
 }

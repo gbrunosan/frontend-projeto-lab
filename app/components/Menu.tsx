@@ -55,9 +55,9 @@ const ProfileMenu = () => {
 
               <li
                 className="hover:bg-gray-100 px-4 py-2.5 border-b border-gray-300 cursor-pointer"
-                onClick={() => handleNavigate("/criarConta")}
+                onClick={() => handleNavigate("/novoUsuario")}
               >
-                <span>Criar nova conta</span>
+                <span>Criar novo usuário</span>
               </li>
 
               <li

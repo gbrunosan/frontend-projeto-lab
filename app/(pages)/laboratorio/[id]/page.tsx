@@ -1,4 +1,4 @@
-'use client';  // Diretiva para garantir que é um componente do lado do cliente
+'use client';
 
 import React from 'react';
 import { useParams } from 'next/navigation';  // Para capturar o id da URL

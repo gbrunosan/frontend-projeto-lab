@@ -61,28 +61,34 @@ const ListarLaboratorios = () => {
   return (
     <div className='w-full px-1 relative'>
       <div className='flex flex-col gap-5 pb-20 h-full'>
-        <div className='flex items-start gap-2 text-textPrimary'>
-          <Computer theme="outline" size="28" fill="#333"/> 
-          <span className='font-bold text-2xl'>Lista de laboratórios</span>
-        </div>
-        <div className='flex flex-col gap-3.5 px-3'>
-          {laboratorios.map((laboratorio) => (
-            <div onClick={() => handleClick(laboratorio)} key={laboratorio.id} className='bg-gradient-to-r from-white to-gray-100 shadow-md min-h-[90px] rounded-lg p-4 flex items-center justify-between cursor-pointer hover:border border-secondary hover:shadow-lg transition-all'>
-              <div className='flex flex-col text-neutral-800'>
-                <span className='text-[19px] font-semibold text-textPrimary capitalize'>{laboratorio.nome}</span>
-                <span className='text-gray-600 text-[17px]'>{laboratorio.local}</span>
-              </div>
+      <div className='flex items-start gap-2 text-textPrimary'>
+        <Computer theme="outline" size="28" fill="#333"/> 
+        <span className='font-bold text-2xl'>Lista de laboratórios</span>
+      </div>
+      <div className='flex flex-col gap-3.5 px-3'>
+        {loading ? (
+          <p className='text-neutral-800'>Carregando...</p>
+          ) : laboratorios.length === 0 ? (
+            <p className='text-neutral-800'>Nenhum laboratório encontrado.</p>
+          ) : (
+            laboratorios.map((laboratorio) => (
+              <div onClick={() => handleClick(laboratorio)} key={laboratorio.id} className='bg-gradient-to-r from-white to-gray-100 shadow-md min-h-[90px] rounded-lg p-4 flex items-center justify-between cursor-pointer hover:border border-secondary hover:shadow-lg transition-all'>
+                <div className='flex flex-col text-neutral-800'>
+                  <span className='text-[19px] font-semibold text-textPrimary first-letter:capitalize'>{laboratorio.nome}</span>
+                  <span className='text-gray-600 text-[17px]'>{laboratorio.local}</span>
+                </div>
 
-              <div className='flex items-center gap-1.5 text-neutral-600'>
-                <button className="cursor-pointer ">
-                  <Calendar theme="outline" size="24" />
-                </button>
-                <button className="cursor-pointer">
-                  <Right theme="outline" size="24" />
-                </button>
+                <div className='flex items-center gap-1.5 text-neutral-600'>
+                  <button className="cursor-pointer">
+                    <Calendar theme="outline" size="24" />
+                  </button>
+                  <button className="cursor-pointer">
+                    <Right theme="outline" size="24" />
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
