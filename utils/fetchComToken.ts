@@ -10,8 +10,11 @@ function getCookie(name: string): string | null {
   return null;
 }
 
+// Definindo a URL base da API
+const BASE_URL = 'http://localhost:5000/api/';
+
 export async function fetchComToken(
-  url: string,
+  endpoint: string,  // Agora a função recebe apenas o endpoint
   options: RequestInit = {}
 ): Promise<any> {
   const token = getCookie('token');  // Usando a função para pegar o token dos cookies
@@ -27,6 +30,9 @@ export async function fetchComToken(
     ...(options.headers || {}),
     'Authorization': `Bearer ${token}`,  // Adicionando o token no cabeçalho
   };
+
+  // Construindo a URL completa concatenando a BASE_URL com o endpoint
+  const url = `${BASE_URL}${endpoint}`;
 
   const response = await fetch(url, {
     ...options,

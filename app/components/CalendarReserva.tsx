@@ -34,7 +34,7 @@ const CalendarReserva: React.FC<CalendarReservaProps> = ({ laboratorioId }) => {
 
     try {
       const data = await fetchComToken(
-        `http://localhost:5000/api/laboratorio/${laboratorioId}/reservas?data=${formattedDate}`
+        `laboratorio/${laboratorioId}/reservas?data=${formattedDate}`
       );
 
       setDadosLaboratorio(data.laboratorio);

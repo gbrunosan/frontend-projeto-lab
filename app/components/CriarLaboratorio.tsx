@@ -18,7 +18,7 @@ function CriarLaboratorio() {
     };
 
     try {
-      await fetchComToken('http://localhost:5000/api/add_laboratorio', {
+      await fetchComToken('add_laboratorio', {
         method: 'POST',
         body: JSON.stringify(data),
       });

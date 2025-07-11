@@ -46,7 +46,7 @@ export default function LoginForm() {
       setUsuario(userData)
 
       // Redireciona para a página de lista de laboratórios
-      window.location.href = "/listaLab"  // Redirecionamento usando a URL diretamente
+      window.location.href = "/"  // Redirecionamento usando a URL diretamente
     } catch (err) {
       setErro("Erro na conexão com o servidor")
     } finally {

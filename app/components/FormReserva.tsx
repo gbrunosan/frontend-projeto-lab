@@ -27,7 +27,7 @@ const FormReserva = () => {
   const router = useRouter()
 
   useEffect(() => {
-    fetchComToken('http://localhost:5000/api/laboratorios')
+    fetchComToken('laboratorios')
       .then(setLaboratorios)
       .catch((err) => {
         console.error('Erro ao carregar laboratórios:', err.message)
@@ -67,7 +67,7 @@ const FormReserva = () => {
     }
 
     try {
-      const data = await fetchComToken('http://localhost:5000/api/add_reserva', {
+      const data = await fetchComToken('add_reserva', {
         method: 'POST',
         body: JSON.stringify(payload),
       })
@@ -87,13 +87,13 @@ const FormReserva = () => {
   }
 
   return (
-    <div className='flex flex-col gap-1 mt-2 bg-gray-50 shadow-md p-4 pb-2 rounded-lg'>
+    <div className='flex flex-col gap-1 mt-2 bg-gray-50 shadow-md p-4 pb-2 md:!p-8 md:!pb-6 rounded-lg w-full max-w-[700px]'>
       <span className='text-[22px] font-bold track text-textPrimary'>
         Criar nova reserva
       </span>
       <form
         onSubmit={handleSubmit}
-        className='flex flex-col gap-4 max-w-xl w-full mx-auto p-3 py-4 rounded-lg text-textSecondary'
+        className='flex flex-col gap-4 w-full mx-auto p-3 py-4 rounded-lg text-textSecondary'
       >
         <div className='rounded-lg w-full bg-white border border-secondary px-2 flex items-center h-11 gap-1.5'>
           <Flask theme='outline' size='24' className='text-textPrimary'></Flask>

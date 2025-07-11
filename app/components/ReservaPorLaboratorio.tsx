@@ -1,0 +1,52 @@
+import CardMinhaReserva from './CardMinhaReserva';
+
+type Reserva = {
+  id: number;
+  data_inicio: string;
+  data_fim: string;
+  professor_responsavel: string;
+  num_estudantes: number;
+  anotacoes?: string;
+  laboratorio_id: number;
+};
+
+type Laboratorio = {
+  id: number;
+  nome: string;
+  reservas: Reserva[];
+};
+
+type ReservasPorLaboratorioProps = {
+  laboratorios: Laboratorio[];
+  onRefresh?: () => void; // Função opcional para atualizar reservas
+};
+
+const ReservasPorLaboratorio = ({ laboratorios, onRefresh }: ReservasPorLaboratorioProps) => {
+  return (
+    <div className="space-y-8 px-3 bg-gray-50 py-6 w-full rounded-lg">
+      {laboratorios.map((laboratorio) => (
+        <div key={laboratorio.id} className="space-y-4">
+          <h2 className="text-lg font-semibold text-primary">Reservas no {laboratorio.nome}</h2>
+          <div className="space-y-4 px-4">
+            {/* Verificação para garantir que reservas seja um array */}
+            {(laboratorio.reservas || []).map((reserva) => (
+              <CardMinhaReserva
+                key={reserva.id}
+                id={reserva.id}
+                dataInicio={reserva.data_inicio}  // Assumindo que o dado vem em snake_case
+                dataFim={reserva.data_fim}        // Assumindo que o dado vem em snake_case
+                professorResponsavel={reserva.professor_responsavel}  // Assumindo que o dado vem em snake_case
+                numEstudantes={reserva.num_estudantes}  // Assumindo que o dado vem em snake_case
+                anotacoes={reserva.anotacoes}
+                onRefresh={onRefresh} // Passa a função para o card
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+
+export default ReservasPorLaboratorio;

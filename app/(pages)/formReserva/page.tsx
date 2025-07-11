@@ -44,13 +44,13 @@ const ReservaPage = () => {
 
       {/* Se estiver carregando, mostra o loading */}
       {loading && (
-        <div className='flex justify-center items-center mt-4'>
+        <div className='flex justify-center items-center mt-4'> 
           <p className='text-gray-500'>Carregando dados...</p>
         </div>
       )}
 
       {/* Aqui usamos o 'hidden' para esconder o FormReserva enquanto está carregando */}
-      <div hidden={loading}>
+      <div hidden={loading} className={`w-full justify-center${!loading ? ' flex' : ''}`}>
         <FormReserva />
       </div>
     </div>

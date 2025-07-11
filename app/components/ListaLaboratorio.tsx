@@ -34,7 +34,7 @@ const ListarLaboratorios = () => {
   // Buscar os laboratórios disponíveis
   const fetchLaboratorios = async () => {
     try {
-      const data = await fetchComToken('http://localhost:5000/api/laboratorios');
+      const data = await fetchComToken('laboratorios');  // Passando só o endpoint
       setLaboratorios(data);
     } catch (err: any) {
       setError(err.message || 'Erro inesperado');
@@ -59,7 +59,7 @@ const ListarLaboratorios = () => {
   };
 
   return (
-    <div className='w-full px-1'>
+    <div className='w-full px-1 relative'>
       <div className='flex flex-col gap-5 pb-20 h-full'>
         <div className='flex items-start gap-2 text-textPrimary'>
           <Computer theme="outline" size="28" fill="#333"/> 
@@ -90,9 +90,9 @@ const ListarLaboratorios = () => {
       {usuario && usuario.tipo === 'admin' && (
         <button
           onClick={handleButtonClick} // Função que lida com o tipo de usuário
-          className="mt-4 bg-green-500 hover:bg-green-600 text-white fixed bottom-8 right-4 w-[65px] h-[65px] rounded-full flex justify-center items-center cursor-pointer shadow"
+          className="mt-4 bg-green-500 hover:bg-green-600 text-white fixed bottom-8 right-4 lg:!right-[15%] 2xl:!right-[20%] w-[65px] lg:w-[80px] h-[65px] lg:h-[80px] rounded-full flex justify-center items-center cursor-pointer shadow"
         >
-          <Plus theme="outline" size="40" fill="#fff" />
+          <Plus theme="outline" size="42" fill="#fff" />
         </button>
       )}
 
