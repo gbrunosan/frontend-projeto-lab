@@ -94,23 +94,30 @@ const CardMinhaReserva = ({
 
   const salvarEdicao = async () => {
     try {
+      const payload = {
+        ...formData,
+        data_inicio: dataInicioEdit?.toISOString().slice(0, 16),
+        data_fim: dataFimEdit?.toISOString().slice(0, 16),
+      };
+
       const response = await fetchComToken(`reserva/${id}`, {
         method: "PUT",
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       setLocalData({
-        dataInicio: formData.data_inicio,
-        dataFim: formData.data_fim,
-        professorResponsavel: formData.professor_responsavel,
-        numEstudantes: formData.num_estudantes,
-        anotacoes: formData.anotacoes,
+        dataInicio: payload.data_inicio || '',
+        dataFim: payload.data_fim || '',
+        professorResponsavel: payload.professor_responsavel,
+        numEstudantes: payload.num_estudantes,
+        anotacoes: payload.anotacoes,
       });
       setShowModal(false);
     } catch (error) {
       console.error(error);
     }
   };
+
 
   const confirmarExclusao = async () => {
     try {
