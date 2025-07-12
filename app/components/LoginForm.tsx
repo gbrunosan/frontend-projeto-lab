@@ -51,7 +51,7 @@ export default function LoginForm() {
     <div className="bg-white shadow-md rounded-xl px-8 w-full text-neutral-800 flex flex-col gap-5 min-h-[500px] h-[55%] max-w-[550px] justify-center">
       <form onSubmit={handleSubmit} className="flex flex-col gap-7">
         <div className="flex flex-col">
-          <span className="font-bold text-3xl mb-2 leading-8">Bem-vindo ao <span className="text-primary">LabCheck</span></span>
+          <span className="font-bold text-3xl mb-2 leading-8">Bem-vindo ao <span className="text-primary">BookLab</span></span>
           <span className="text-gray-500 pr-4 leading-5">Faça as reservas dos laboratórios para suas aulas e acompanhe-as de forma rápida!</span>
         </div>
 

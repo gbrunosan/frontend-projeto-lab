@@ -33,7 +33,7 @@ const ProfileMenu = () => {
   };
 
   return (
-    <div className="relative z-[99]">
+    <div className="relative z-[5]">
       <div onClick={toggleMenu} className="flex gap-2 items-center cursor-pointer">
         {usuario ? (
           <span className="font-semibold truncate w-[80%] max-w-[200px] md:max-w-[400px] xl:max-w-[600px]">

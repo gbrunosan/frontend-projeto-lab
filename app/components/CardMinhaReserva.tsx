@@ -92,31 +92,50 @@ const CardMinhaReserva = ({
     setTimeout(() => setIsVisible(true), 10);
   };
 
-  const salvarEdicao = async () => {
-    try {
-      const payload = {
-        ...formData,
-        data_inicio: dataInicioEdit?.toISOString().slice(0, 16),
-        data_fim: dataFimEdit?.toISOString().slice(0, 16),
-      };
+ const salvarEdicao = async () => {
+  try {
+    const payload = {
+      ...formData,
+      data_inicio: dataInicioEdit
+        ? formatarDataLocal(dataInicioEdit)
+        : "",
+      data_fim: dataFimEdit ? formatarDataLocal(dataFimEdit) : "",
+    };
 
-      const response = await fetchComToken(`reserva/${id}`, {
-        method: "PUT",
-        body: JSON.stringify(payload),
-      });
+    const response = await fetchComToken(`reserva/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
 
-      setLocalData({
-        dataInicio: payload.data_inicio || '',
-        dataFim: payload.data_fim || '',
-        professorResponsavel: payload.professor_responsavel,
-        numEstudantes: payload.num_estudantes,
-        anotacoes: payload.anotacoes,
-      });
-      setShowModal(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    setLocalData({
+      dataInicio: payload.data_inicio || "",
+      dataFim: payload.data_fim || "",
+      professorResponsavel: payload.professor_responsavel,
+      numEstudantes: payload.num_estudantes,
+      anotacoes: payload.anotacoes,
+    });
+    setShowModal(false);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// Função para formatar a data no formato local
+const formatarDataLocal = (data: Date) => {
+  const pad = (n: number) => n.toString().padStart(2, "0");
+  return (
+    data.getFullYear() +
+    "-" +
+    pad(data.getMonth() + 1) +
+    "-" +
+    pad(data.getDate()) +
+    "T" +
+    pad(data.getHours()) +
+    ":" +
+    pad(data.getMinutes())
+  );
+};
+
 
 
   const confirmarExclusao = async () => {

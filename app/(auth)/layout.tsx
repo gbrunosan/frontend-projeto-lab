@@ -1,6 +1,13 @@
 import '@/styles/globals.css'
 import { ReactNode } from 'react'
 
+export const metadata = {
+  title: 'BookLab',
+  description: 'Reservas de laboratórios',
+  icons: {
+    icon: './favicon.ico',
+  },
+}
 interface RootLayoutProps {
   children: ReactNode;
 }

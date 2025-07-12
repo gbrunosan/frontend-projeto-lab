@@ -3,7 +3,7 @@ import Header from '@/app/components/Header'
 import { ReactNode } from 'react'
 
 export const metadata = {
-  title: 'Nome do app',
+  title: 'BookLab',
   description: 'Reservas de laboratórios',
   icons: {
     icon: './favicon.ico',

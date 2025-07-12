@@ -47,15 +47,19 @@ export default function CriarLabPage() {
         <h2 className="text-2xl font-bold mb-6 text-textPrimary">Lista de Laboratórios</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 px-4">
-          {laboratorios.map((laboratorio) => (
-            <CardLaboratorio
-              key={laboratorio.id}
-              id={laboratorio.id}
-              nome={laboratorio.nome}
-              local={laboratorio.local}
-              onRefresh={refreshLaboratorios}
-            />
-          ))}
+          {laboratorios.length === 0 ? (
+            <p className="text-center text-gray-500">Nenhum laboratório encontrado</p>
+          ) : (
+            laboratorios.map((laboratorio) => (
+              <CardLaboratorio
+                key={laboratorio.id}
+                id={laboratorio.id}
+                nome={laboratorio.nome}
+                local={laboratorio.local}
+                onRefresh={refreshLaboratorios}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>
