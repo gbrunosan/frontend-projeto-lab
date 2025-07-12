@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Front-End - Projeto de Reservas de Laboratórios IFMS
+Este é o front-end da aplicação de reservas de laboratórios para o **IFMS**. A aplicação permite que os usuários façam reservas de laboratórios de forma simples e responsiva.
 
-## Getting Started
+## Como executar o projeto
 
-First, run the development server:
+### 1. Clone o repositório
+git clone https://github.com/gbrunosan/frontend-projeto-lab
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 2. Entre no Repositório criado
+cd frontend-projeto-lab
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Instale as dependências
+npm install
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Gere um build local do projeto
+npm run build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 5. Começa a rodar localmente o projeto
+npm start
 
-## Learn More
+### 6. Começa a rodar localmente o projeto
+É só testar, o banco vai começar vazio então pode aproveitar para explorar as funções que expliquei acima.
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Rotas
+#### Todas as rotas com exceção da login são autenticadas, então você não conseguirá navegar se não fizer login antes, elas também possuem um menu para o tipo de usuário "professor" e outro para "admin"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### /login
+Rota inicial para fazer login existe uma conta do tipo "admin" no banco. Use-a para criar outros perfis.
+email: admin@lab.com 
+senha: 12345678
 
-## Deploy on Vercel
+### / (home)
+contém a listagem de laboratórios, admins veêm um botão de + para fazer novas reservas ou novos laboratórios, professores apenas reserva, clicar em um laboratório abre o calendário de reservas dele.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### /criarLab 
+Usuários "admin" podem clicar no botão ' + ' > "novo laboratório" na home. Serve para, criar, editar e excluir laboratórios.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### /formReserva
+É possível chegar aqui pelo botão "Nova reserva" na tela inicial e pelo calendário. É uma página com um formulário de reserva, é possível fazer múltiplas reservas marcando a opção "repetir reserva" e escolhendo as datas se elas estiverem disponíveis.
+
+### /laboratorio/idLab
+Chegamos aqui clicando em um dos laboratórios na tela inicial. Mostra um calendário para encontrar as reservas do laboratório escolhido por dia, selecione um dia e veja as reservas.
+
+### /minhasReservas
+Acessível pelo menu no cabeçalho, mostra suas próprias reservas separadas por laboratório, é possível editar (de acordo com a disponibilidade do horário) e excluir suas reservas.
+
+### /novoUsuario
+Acessível pelo menu no cabeçalho, usuários admin podem criar outros usuários do tipo "professor" e "admin".
