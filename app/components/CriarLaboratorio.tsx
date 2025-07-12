@@ -4,7 +4,11 @@ import React, { useState } from 'react';
 import { fetchComToken } from '@/utils/fetchComToken';
 import Toast from '@/app/components/Toast';
 
-function CriarLaboratorio() {
+type CriarLaboratorioProps = {
+  onRefresh: () => void;
+};
+
+function CriarLaboratorio({ onRefresh }: CriarLaboratorioProps) {
   const [nome, setNome] = useState('');
   const [local, setLocal] = useState('');
   const [toast, setToast] = useState<any>(null);
@@ -22,6 +26,8 @@ function CriarLaboratorio() {
         method: 'POST',
         body: JSON.stringify(data),
       });
+
+      onRefresh();
 
       setToast({
         type: 'success',

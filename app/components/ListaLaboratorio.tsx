@@ -56,19 +56,19 @@ const ListarLaboratorios = () => {
 
   return (
     <div className='w-full px-1 relative'>
-      <div className='flex flex-col gap-5 md:gap-10 h-full'>
+      <div className='flex flex-col gap-5 md:gap-10? h-full'>
       <div className='flex items-start gap-2 text-textPrimary'>
         <Computer theme="outline" size="28" fill="#333"/> 
         <span className='font-bold text-2xl'>Lista de laboratórios</span>
       </div>
-      <div className='flex flex-col gap-3.5 px-3'>
+      <div className='flex flex-col gap-3.5 px-3 md:px-20'>
         {loading ? (
           <p className='text-neutral-800'>Carregando...</p>
           ) : laboratorios.length === 0 ? (
             <p className='text-neutral-800'>Nenhum laboratório encontrado.</p>
           ) : (
             laboratorios.map((laboratorio: any) => (
-              <div onClick={() => handleClick(laboratorio)} key={laboratorio.id} className='bg-gradient-to-l md:from-green-200 md:to-green-100 from-white to-gray-100 shadow-md min-h-[90px] rounded-lg p-4 flex items-center justify-between cursor-pointer hover:border border-secondary hover:shadow-lg transition-all'>
+              <div onClick={() => handleClick(laboratorio)} key={laboratorio.id} className='bg-gradient-to-r md:from-green-50 md:to-green-50 from-white to-gray-100 shadow-md min-h-[90px] rounded-lg p-4 flex items-center justify-between cursor-pointer hover:border border-secondary hover:shadow-lg transition-all'>
                 <div className='flex flex-col text-neutral-800'>
                   <span className='text-[19px] font-semibold text-textPrimary first-letter:capitalize'>{laboratorio.nome}</span>
                   <span className='text-gray-600 text-[17px]'>{laboratorio.local}</span>
@@ -91,7 +91,7 @@ const ListarLaboratorios = () => {
       {usuario && usuario.tipo === 'admin' && (
         <button
           onClick={handleButtonClick}
-          className="mt-4 bg-green-500 hover:bg-green-600 text-white fixed bottom-8 right-4 lg:!right-[15%] 2xl:!right-[20%] w-[65px] lg:w-[80px] h-[65px] lg:h-[80px] rounded-full flex justify-center items-center cursor-pointer shadow"
+          className="mt-4 bg-green-500 hover:bg-green-600 text-white fixed bottom-8 right-4 lg:!right-[15%] 2xl:!right-[20%] w-[65px] lg:w-[80px] h-[65px] lg:h-[80px] rounded-full flex justify-center items-center cursor-pointer shadow-md"
         >
           <Plus theme="outline" size="42" fill="#fff" />
         </button>
